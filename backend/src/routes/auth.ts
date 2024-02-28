@@ -9,7 +9,7 @@ import verifyToken from "../middleware/auth";
 const router = express.Router();
 
 router.post(
-  "/login",
+  "/sign-in",
   [
     check("email", "Email is required").isEmail(),
     check(
@@ -50,7 +50,7 @@ router.post(
         maxAge: 86400000,
       });
 
-      return res.sendStatus(200).json({ userId: user._id });
+      return res.status(200).json({ userId: user._id });
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: "Something went wrong" });
