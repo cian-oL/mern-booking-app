@@ -63,4 +63,14 @@ router.get("/validate-token", verifyToken, (req: Request, res: Response) => {
   res.status(200).send({ userId: req.userId });
 });
 
+// sign out - return an empty token to the cookie to replace previous validation
+router.post("/sign-out", (req: Request, res: Response) => {
+  res.cookie("auth_token", ""),
+    {
+      expires: new Date(0),
+    };
+
+  return res.send();
+});
+
 export default router;
