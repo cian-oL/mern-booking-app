@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import mongosse from "mongoose";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 import authRoutes from "./routes/auth";
 import UserRoutes from "./routes/users";
@@ -19,6 +20,9 @@ app.use(
     credentials: true,
   })
 );
+
+// have one server for frontend and backend (small project)
+app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", UserRoutes);
