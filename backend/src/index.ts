@@ -4,11 +4,19 @@ import "dotenv/config";
 import mongosse from "mongoose";
 import cookieParser from "cookie-parser";
 import path from "path";
+import { v2 as cloudinary } from "cloudinary";
 
 import authRoutes from "./routes/auth";
-import UserRoutes from "./routes/users";
+import userRoutes from "./routes/users";
+import myHotelRoutes from "./routes/myHotels";
 
 mongosse.connect(process.env.MONGODB_URL as string);
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME as string,
+  api_key: process.env.CLOUDINARY_API as string,
+  api_secret: process.env.CLOUDINARY_API_SECRET as string,
+});
 
 const app = express();
 app.use(cookieParser());
@@ -25,7 +33,8 @@ app.use(
 app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 
 app.use("/api/auth", authRoutes);
-app.use("/api/users", UserRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/my-hotels", myHotelRoutes);
 
 app.listen(5678, () => {
   console.log("Server running on port 5678");
