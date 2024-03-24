@@ -1,13 +1,18 @@
 import { useFormContext } from "react-hook-form";
 
 import { hotelTypes } from "../../config/hotel-options-config";
+import { HotelFormData } from "./ManageHotelForm";
 
 const HotelTypeSection = () => {
-  const { register, watch } = useFormContext();
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useFormContext<HotelFormData>();
   const typeWatch = watch("hotelType");
 
   return (
-    <div>
+    <>
       <h2 className="text-2xl font-bold mb-3">Type</h2>
       <div className="grid grid-cols-5 gap-2">
         {hotelTypes.map((type) => (
@@ -28,7 +33,12 @@ const HotelTypeSection = () => {
           </label>
         ))}
       </div>
-    </div>
+      {errors.hotelType && (
+        <span className="text-red-500 text-sm font-bold">
+          {errors.hotelType.message}
+        </span>
+      )}
+    </>
   );
 };
 
