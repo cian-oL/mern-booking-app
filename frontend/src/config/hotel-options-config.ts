@@ -10,3 +10,12 @@ export const hotelTypes = [
   "Hovel",
   "Dump",
 ];
+
+export const hotelFacilities = [
+  "Free WiFi",
+  "Parking",
+  "Spa",
+  "Outdoor Pool",
+  "Games Room",
+  "Laundry Service",
+];
