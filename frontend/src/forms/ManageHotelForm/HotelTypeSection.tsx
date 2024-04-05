@@ -13,9 +13,9 @@ const HotelTypeSection = () => {
 
   return (
     <>
-      <h2 className="text-2xl font-bold mb-3">Type</h2>
+      <h2 className="text-2xl font-bold">Type</h2>
       <div className="grid grid-cols-5 gap-2">
-        {hotelTypes.map((type) => (
+        {hotelTypes.map((type, index) => (
           <label
             className={
               typeWatch === type
@@ -24,6 +24,7 @@ const HotelTypeSection = () => {
             }
           >
             <input
+              key={index}
               type="radio"
               value={type}
               className="hidden"
