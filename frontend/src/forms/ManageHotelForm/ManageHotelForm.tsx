@@ -20,32 +20,38 @@ export type HotelFormData = {
   imageFiles: FileList;
 };
 
-const ManageHotelForm = () => {
+// declare the prop types accepted by the component
+type Props = {
+  onSave: (formData: FormData) => void;
+  isLoading: boolean;
+};
+
+const ManageHotelForm = ({ onSave, isLoading }: Props) => {
   const formMethods = useForm<HotelFormData>();
   const { handleSubmit } = formMethods;
 
-  const onSubmit = handleSubmit((formDataJson: HotelFormData) => {
+  // Need to use FormData Object to create a req.body with file data included
+  const onSubmit = handleSubmit((hotelFormData) => {
     const formData = new FormData();
+    formData.append("hotelName", hotelFormData.hotelName);
+    formData.append("city", hotelFormData.city);
+    formData.append("country", hotelFormData.country);
+    formData.append("description", hotelFormData.description);
+    formData.append("pricePerNight", hotelFormData.pricePerNight.toString());
+    formData.append("rating", hotelFormData.rating.toString());
+    formData.append("hotelType", hotelFormData.hotelType);
+    formData.append("adultCount", hotelFormData.adultCount.toString());
+    formData.append("childCount", hotelFormData.childCount.toString());
 
-    formData.append("hotelName", formDataJson.hotelName);
-    formData.append("city", formDataJson.city);
-    formData.append("country", formDataJson.country);
-    formData.append("description", formDataJson.description);
-    formData.append("pricePerNight", formDataJson.pricePerNight.toString());
-    formData.append("rating", formDataJson.rating.toString());
-    formData.append("hotelType", formDataJson.hotelType);
-    formData.append("adultCount", formDataJson.adultCount.toString());
-    formData.append("childCount", formDataJson.childCount.toString());
-
-    formDataJson.facilities.forEach((facility, index) => {
+    hotelFormData.facilities.forEach((facility, index) => {
       formData.append(`facilities[${index}]`, facility);
     });
 
-    Array.from(formDataJson.imageFiles).forEach((imageFile) => {
+    Array.from(hotelFormData.imageFiles).forEach((imageFile) => {
       formData.append("imageFiles", imageFile);
     });
 
-    console.log(formData);
+    onSave(formData);
   });
 
   return (
@@ -59,9 +65,10 @@ const ManageHotelForm = () => {
         <span className="flex justify-end">
           <button
             type="submit"
-            className="text-white bg-blue-600 font-bold p-2 hover:bg-blue-500 text-xl"
+            className="text-white bg-blue-600 font-bold p-2 hover:bg-blue-500 text-xl disabled:bg-orange-500"
+            disabled={isLoading}
           >
-            Add
+            {isLoading ? "Saving..." : "Add"}
           </button>
         </span>
       </form>
