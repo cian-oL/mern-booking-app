@@ -9,7 +9,6 @@ const DetailsSection = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-3xl font-bold">Add Hotel</h1>
       <label className="text-gray-700 text-sm font-bold">
         Name
         <input
@@ -76,7 +75,9 @@ const DetailsSection = () => {
         >
           <option value="">Choose a rating...</option>
           {[1, 2, 3, 4, 5].map((num) => (
-            <option value={num}>{num}-star</option>
+            <option key={num} value={num}>
+              {num}-star
+            </option>
           ))}
         </select>
         {errors.rating && (

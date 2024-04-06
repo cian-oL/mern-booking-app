@@ -15,10 +15,11 @@ const HotelTypeSection = () => {
     <>
       <h2 className="text-2xl font-bold">Type</h2>
       <div className="grid grid-cols-5 gap-2">
-        {hotelTypes.map((type, index) => (
+        {hotelTypes.map((hotelType, index) => (
           <label
+            key={index}
             className={
-              typeWatch === type
+              typeWatch === hotelType
                 ? "cursor-pointer bg-blue-300 text-sm rounded-full px-4 py-0 font-semibold"
                 : "cursor-pointer bg-gray-300 text-sm rounded-full px-4 py-0 font-semibold"
             }
@@ -26,11 +27,11 @@ const HotelTypeSection = () => {
             <input
               key={index}
               type="radio"
-              value={type}
+              value={hotelType}
               className="hidden"
               {...register("hotelType", { required: "This is required" })}
             />
-            <span>{type}</span>
+            <span>{hotelType}</span>
           </label>
         ))}
       </div>

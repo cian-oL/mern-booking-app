@@ -13,10 +13,10 @@ const FacilitiesSection = () => {
     <>
       <h2 className="text-2xl font-bold">Facilities</h2>
       <div className="grid grid-cols-5 gap-2">
-        {hotelFacilities.map((facility) => (
-          <label className="text-sm flex gap-1">
+        {hotelFacilities.map((facility, index) => (
+          <label key={index} className="text-sm flex gap-1">
             <input
-              key={facility._id}
+              key={index}
               type="checkbox"
               value={facility}
               {...register("facilities", {
