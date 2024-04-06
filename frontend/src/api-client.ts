@@ -1,6 +1,5 @@
 import { RegisterFormData } from "./pages/Register";
 import { SignInFormData } from "./pages/SignIn";
-import { HotelFormData } from "./forms/ManageHotelForm/ManageHotelForm";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
@@ -66,19 +65,16 @@ export const signOut = async () => {
 
 // ===== HOTEL FORM =====
 
-export const addMyHotel = async (formData: HotelFormData) => {
+// formData Parameter means no json content-type!!!
+export const addMyHotel = async (formData: FormData) => {
   const response = await fetch(`${API_BASE_URL}/api/my-hotels`, {
     method: "POST",
-    headers: {
-      "Content-Type": "json/application",
-    },
-    body: JSON.stringify(formData),
+    body: formData,
     credentials: "include",
   });
 
-  const responseBody = await response.json();
   if (!response.ok) {
     throw new Error("Failed to add hotel");
   }
-  return responseBody;
+  return response.json();
 };
