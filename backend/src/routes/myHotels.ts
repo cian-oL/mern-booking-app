@@ -22,7 +22,7 @@ router.post(
   "/",
   verifyToken,
   [
-    body("name").notEmpty().withMessage("Name is required"),
+    body("hotelName").notEmpty().withMessage("Name is required"),
     body("city").notEmpty().withMessage("City is required"),
     body("country").notEmpty().withMessage("Country is required"),
     body("description").notEmpty().withMessage("Description is required"),
@@ -34,7 +34,7 @@ router.post(
       .notEmpty()
       .isNumeric()
       .withMessage("Star rating is required"),
-    body("hotelTyoe").notEmpty().withMessage("Hotel type is required"),
+    body("hotelType").notEmpty().withMessage("Hotel type is required"),
     body("facilities")
       .notEmpty()
       .isArray()
@@ -48,19 +48,20 @@ router.post(
       .isNumeric()
       .withMessage("Child count is required"),
   ],
-  upload.array("imageFiles", 6), // expect a form prop called iamgeFiles w array of up to 6
+  upload.array("imageFiles", 6), // expect a form prop called imageFiles w array of up to 6
   async (req: Request, res: Response) => {
     try {
-      const newHotel: HotelType = req.body;
       const imageFiles = req.files as Express.Multer.File[];
+      const newHotel: HotelType = req.body;
 
       // upload each image to cloudinary as base64-encoded string
-      const uploadPromises = imageFiles.map(async (image) => {
-        const b64 = Buffer.from(image.buffer).toString("base64");
-        const dataURI = `data:${image.mimetype};base64,${b64}`;
+      const uploadPromises = imageFiles?.map(async (imageFile) => {
+        const b64 = Buffer.from(imageFile.buffer).toString("base64");
+        const dataURI = `data:${imageFile.mimetype};base64,${b64}`;
         const res = await cloudinary.uploader.upload(dataURI);
         return res.url;
       });
+
       const imageUrls = await Promise.all(uploadPromises);
 
       //add url strings to hotel object & save to db
