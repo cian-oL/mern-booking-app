@@ -36,6 +36,13 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/my-hotels", myHotelRoutes);
 
+// Protected routes (e.g. add-hotel) are behind conditional logic
+// They cannot be accessed by the static files deployed
+// Resolve by directing all non-API requests to the index.html in dist
+app.get("*", (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
+});
+
 app.listen(5678, () => {
   console.log("Server running on port 5678");
 });
