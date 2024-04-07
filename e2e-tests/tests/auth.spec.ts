@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const UI_URL = "http://localhost:5173";
+export const UI_URL = "http://localhost:5173";
 
 test("should allow user to sign in", async ({ page }) => {
   await page.goto(UI_URL);
