@@ -80,4 +80,14 @@ router.post(
   }
 );
 
+router.get("/", verifyToken, async (req: Request, res: Response) => {
+  try {
+    const hotels = await Hotel.find({ userId: req.userId });
+    res.status(201).json(hotels);
+  } catch (err) {
+    console.error("Error findinghotels", err);
+    res.status(500).json({ message: "Error finding hotels" });
+  }
+});
+
 export default router;
