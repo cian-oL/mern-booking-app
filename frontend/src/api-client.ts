@@ -81,7 +81,7 @@ export const addMyHotel = async (formData: FormData) => {
   return response.json();
 };
 
-export const getAllHotels = async (): Promise<HotelType> => {
+export const getAllHotels = async (): Promise<HotelType[]> => {
   const response = await fetch(`${API_BASE_URL}/api/my-hotels`, {
     method: "GET",
     credentials: "include",
