@@ -92,3 +92,16 @@ export const getAllHotels = async (): Promise<HotelType[]> => {
   }
   return response.json();
 };
+
+export const getOneHotelById = async (hotelId: string): Promise<HotelType> => {
+  const response = await fetch(`${API_BASE_URL}/api/my-hotels/${hotelId}`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch hotel");
+  }
+
+  return response.json();
+};

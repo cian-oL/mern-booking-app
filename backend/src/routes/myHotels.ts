@@ -84,10 +84,21 @@ router.post(
 router.get("/", verifyToken, async (req: Request, res: Response) => {
   try {
     const hotels = await Hotel.find({ userId: req.userId });
-    res.status(201).json(hotels);
+    res.status(200).json(hotels);
   } catch (err) {
-    console.error("Error findinghotels", err);
+    console.error("Error finding hotels", err);
     res.status(500).json({ message: "Error finding hotels" });
+  }
+});
+
+router.get("/:id", verifyToken, async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const hotel = await Hotel.findOne({ _id: id, userId: req.userId });
+    res.status(200).json(hotel);
+  } catch (err) {
+    console.error("Error finding hotel", err);
+    res.status(500).json({ message: "Error finding hotel" });
   }
 });
 
