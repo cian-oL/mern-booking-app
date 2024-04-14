@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import path from "path";
 
-import { UI_URL } from "./auth.spec";
+const UI_URL = "http://localhost:5173";
 
 // confirm sign-in to view hotels page before running tests on hotel pages
 test.beforeEach(async ({ page }) => {
@@ -45,4 +45,25 @@ test("should allow user to add a hotel", async ({ page }) => {
 
   await page.getByRole("button", { name: "Add" }).click();
   await expect(page.getByText("Hotel Saved")).toBeVisible();
+});
+
+test("should display hotels", async ({ page }) => {
+  await page.goto(`${UI_URL}/my-hotels`);
+
+  // Hotel details are visible
+  await expect(page.getByText("Test Hotel Name")).toBeVisible();
+  await expect(
+    page.getByText("Test Description for this imaginary hotel")
+  ).toBeVisible();
+  await expect(page.getByText("Test City")).toBeVisible();
+  await expect(page.getByText("Test Country")).toBeVisible();
+  await expect(page.getByText("Luxury")).toBeVisible();
+  await expect(page.getByText("€123 Per Night")).toBeVisible();
+  await expect(page.getByText("74 Adults")).toBeVisible();
+  await expect(page.getByText("75 Children")).toBeVisible();
+  await expect(page.getByText("3 Star Rating")).toBeVisible();
+
+  // Button links are visible
+  await expect(page.getByRole("link", { name: "Add Hotel" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "View Details" })).toBeVisible();
 });
