@@ -5,6 +5,8 @@ import HotelTypeSection from "./HotelTypeSection";
 import FacilitiesSection from "./FacilitiesSection";
 import GuestNumberSection from "./GuestNumberSection";
 import ImagesSection from "./ImagesSection";
+import { HotelType } from "../../../../backend/src/shared/types";
+import { useEffect } from "react";
 
 export type HotelFormData = {
   hotelName: string;
@@ -22,13 +24,19 @@ export type HotelFormData = {
 
 // declare the prop types accepted by the component
 type Props = {
+  hotel: HotelType;
   onSave: (formData: FormData) => void;
   isLoading: boolean;
 };
 
-const ManageHotelForm = ({ onSave, isLoading }: Props) => {
+const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
   const formMethods = useForm<HotelFormData>();
-  const { handleSubmit } = formMethods;
+  const { handleSubmit, reset } = formMethods;
+
+  // note that overlapping fields b/w hotel & HotelType makes this ok
+  useEffect(() => {
+    reset(hotel);
+  }, [hotel, reset]);
 
   // Need to use FormData Object to create a req.body with file data included
   const onSubmit = handleSubmit((hotelFormData) => {
