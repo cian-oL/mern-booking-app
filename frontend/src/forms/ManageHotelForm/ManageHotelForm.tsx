@@ -20,6 +20,7 @@ export type HotelFormData = {
   adultCount: number;
   childCount: number;
   imageFiles: FileList;
+  imageUrls: string[];
 };
 
 // declare the prop types accepted by the component
