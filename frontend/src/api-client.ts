@@ -108,7 +108,7 @@ export const getOneHotelById = async (hotelId: string): Promise<HotelType> => {
 
 export const updateOneHotelById = async (formData: FormData) => {
   const response = await fetch(
-    `${API_BASE_URL}/api/my-hotels/${formData.get("hotelId")}`,
+    `${API_BASE_URL}/api/my-hotels/${formData.get("id")}`,
     {
       method: "PUT",
       body: formData,

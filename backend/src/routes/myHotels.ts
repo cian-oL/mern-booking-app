@@ -96,7 +96,7 @@ router.get("/:id", verifyToken, async (req: Request, res: Response) => {
 router.put(
   "/:id",
   verifyToken,
-  upload.array("ImageFiles"),
+  upload.array("imageFiles"),
   async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
@@ -116,15 +116,15 @@ router.put(
       }
 
       // Add new image files to current images present (if any pre-exist)
-      const files = req.files as Express.Multer.File[];
-      const updatedImageUrls = await uploadImages(files);
+      const imageFiles = req.files as Express.Multer.File[];
+      const updatedImageUrls = await uploadImages(imageFiles);
       hotel.imageUrls = [
         ...updatedImageUrls,
         ...(updatedHotel.imageUrls || []),
       ];
 
       await hotel.save();
-      return res.status(204).json(hotel);
+      return res.status(200).send(hotel);
     } catch (err) {
       console.error("Something went wrong");
       res.status(500).json({ message: "Something went wrong" });
