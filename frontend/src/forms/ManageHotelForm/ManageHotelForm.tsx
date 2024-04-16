@@ -25,7 +25,7 @@ export type HotelFormData = {
 
 // declare the prop types accepted by the component
 type Props = {
-  hotel: HotelType;
+  hotel?: HotelType;
   onSave: (formData: FormData) => void;
   isLoading: boolean;
 };
@@ -42,6 +42,7 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
   // Need to use FormData Object to create a req.body with file data included
   const onSubmit = handleSubmit((hotelFormData) => {
     const formData = new FormData();
+    hotel && formData.append("id", hotel._id); // for editing hotels
     formData.append("hotelName", hotelFormData.hotelName);
     formData.append("city", hotelFormData.city);
     formData.append("country", hotelFormData.country);
@@ -55,6 +56,12 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
     hotelFormData.facilities.forEach((facility, index) => {
       formData.append(`facilities[${index}]`, facility);
     });
+
+    if (hotelFormData.imageUrls) {
+      hotelFormData.imageUrls.forEach((url, index) => {
+        formData.append(`imageUrls[${index}]`, url);
+      });
+    }
 
     Array.from(hotelFormData.imageFiles).forEach((imageFile) => {
       formData.append("imageFiles", imageFile);
