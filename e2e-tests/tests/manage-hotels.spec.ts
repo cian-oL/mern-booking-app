@@ -75,7 +75,7 @@ test("should allow user to edit a hotel", async ({ page }) => {
   await expect(
     page.getByText("Test Description for this imaginary hotel")
   ).toBeVisible();
-  await page.getByText("View Details").click();
+  await page.getByRole("link", { name: "View Details" }).first().click();
 
   // Wait for redner of current input values
   await page.waitForSelector("[name=hotelName]", { state: "attached" });
