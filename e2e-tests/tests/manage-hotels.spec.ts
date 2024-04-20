@@ -67,3 +67,55 @@ test("should display hotels", async ({ page }) => {
   await expect(page.getByRole("link", { name: "Add Hotel" })).toBeVisible();
   await expect(page.getByRole("link", { name: "View Details" })).toBeVisible();
 });
+
+test("should allow user to edit a hotel", async ({ page }) => {
+  // confirrm return to my hotels page & presence of pre-created hotel that can be accessed
+  await page.goto(`${UI_URL}/my-hotels`);
+  await expect(page.getByText("My Hotels")).toBeVisible();
+  await expect(
+    page.getByText("Test Description for this imaginary hotel")
+  ).toBeVisible();
+  await page.getByText("View Details").click();
+
+  // Wait for redner of current input values
+  await page.waitForSelector("[name=hotelName]", { state: "attached" });
+  await page.waitForSelector("[name=city]", { state: "attached" });
+  await page.waitForSelector("[name=country]", { state: "attached" });
+  await page.waitForSelector("[name=description]", { state: "attached" });
+  await page.waitForSelector("[name=pricePerNight]", { state: "attached" });
+  await page.waitForSelector("[name=rating]", { state: "attached" });
+  await page.waitForSelector("[name=hotelType]", { state: "attached" });
+  await page.waitForSelector("[name=facilities]", { state: "attached" });
+  await page.waitForSelector("[name=adultCount]", { state: "attached" });
+  await page.waitForSelector("[name=childCount]", { state: "attached" });
+  await page.waitForSelector("[name=imageFiles]", { state: "attached" });
+
+  // edit values of text or number inputs
+  await page.locator("[name=hotelName]").fill("Test Hotel Name UPDATED");
+  await page.locator("[name=city]").fill("Test City UPDATED");
+  await page.locator("[name=country]").fill("Test Country UPDATED");
+  await page
+    .locator("[name=description]")
+    .fill("UPDATED DESCRIPTION for this imaginary hotel");
+  await page.locator("[name=pricePerNight]").fill("321");
+  await page.selectOption("select[name=rating]", "1");
+  await page.getByText("Hovel").click(); //   Hotel Type Section
+
+  //   Facilities Section -- confirm multiple selection is possible
+  await page.getByLabel("Free WiFi").uncheck();
+  await page.getByLabel("Games Room").check();
+  await page.getByLabel("Outdoor Pool").check();
+
+  //   Guest Number Section
+  await page.locator("[name=adultCount]").fill("4");
+  await page.locator("[name=childCount]").fill("2");
+
+  //   Images Section
+  await page.setInputFiles("[name=imageFiles]", [
+    path.join(__dirname, "files", "test-image_3.webp"),
+    path.join(__dirname, "files", "test-image_2.webp"),
+  ]);
+
+  await page.getByRole("button", { name: "Add" }).click();
+  await expect(page.getByText("Hotel Saved")).toBeVisible();
+});
