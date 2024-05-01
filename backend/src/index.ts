@@ -9,6 +9,7 @@ import { v2 as cloudinary } from "cloudinary";
 import authRoutes from "./routes/auth";
 import userRoutes from "./routes/users";
 import myHotelRoutes from "./routes/myHotels";
+import hotelRoutes from "./routes/hotels";
 
 mongosse.connect(process.env.MONGODB_URL as string);
 
@@ -35,6 +36,7 @@ app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/my-hotels", myHotelRoutes);
+app.use("/api/hotels", hotelRoutes);
 
 // Protected routes (e.g. add-hotel) are behind conditional logic
 // They cannot be accessed by the static files deployed
